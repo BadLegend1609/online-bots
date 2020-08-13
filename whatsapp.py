@@ -19,7 +19,7 @@ class WpBot:
             count += 1
             
 bot = WpBot()
-name = "" #replace it with the name of your contact
+name = "Kundu Bro ❤️" #replace it with the name of your contact
 bot.spam(name)
         
         

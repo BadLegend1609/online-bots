@@ -18,7 +18,7 @@ class InstaBot:
         self.driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div/div/div/button").click()
         sleep(1)
         self.driver.find_element_by_xpath("/html/body/div[4]/div/div/div/div[3]/button[2]").click()
-        self.driver.find_element_by_xpath("//a[@href='/weakness_16/']").click()
+        self.driver.find_element_by_xpath("//a[@href='/{}/']".format(self.username)).click()
         sleep(2)
         
     #########################Getting Followers And Following And Comparing And Unfollowing or Following Them############################
@@ -36,14 +36,14 @@ class InstaBot:
         following_list = []
         following_list_raw = []
         to_unfollow_list = []
-        to_follow_list = []
+        # to_follow_list = []
         
         ##########################################Adding to followers list###########################################
         def followers_add():
             scroll = round(int(followers)/7)
             self.driver.find_element_by_xpath('//a[text()=" followers"]').click()
             sleep(2)
-            self.driver.find_element_by_xpath('/html/body/div[4]/div/div/div[2]/ul/div/li[2]').click()
+            # self.driver.find_element_by_xpath('/html/body/div[4]/div/div/div[2]/ul/div/li[2]').click()
             
             script = """ 
                 element = document.querySelector(".isgrP");
@@ -61,20 +61,24 @@ class InstaBot:
                 for links in i:
                     name = links.get_attribute('innerText')
                     followers_list.append(name)
+                    
+                    
+                    ################################# Follow Everyone ####################
+            btn_list = self.driver.find_elements_by_xpath('//button[text()="Follow"]')
+            for i in btn_list:
+                i.click()
+                sleep(0.5)
             sleep(1)        
             self.driver.find_element_by_xpath('/html/body/div[4]/div/div/div[1]/div/div[2]/button').click()
             sleep(1)
-            
-                
             print(followers_list)
-        
         
         ###########################################Adding to following list##################################
         def following_add():
             scroll = round(int(followers)/7)
             self.driver.find_element_by_xpath('//a[text()=" following"]').click()
             sleep(2)
-            self.driver.find_element_by_xpath('/html/body/div[4]/div/div/div[2]/ul/div/li[2]').click()
+            # self.driver.find_element_by_xpath('/html/body/div[4]/div/div/div[2]/ul/div/li[2]').click()
             
             script = """ 
                 element = document.querySelector(".isgrP");
@@ -92,6 +96,15 @@ class InstaBot:
                 for links in i:
                     name = links.get_attribute('innerText')
                     following_list.append(name)
+                    #############################    Unfollow Everyone ##########################################
+            btn_list = self.driver.find_elements_by_xpath('//button[text()="Following"]')
+            for i in btn_list:
+                i.click()
+                try:
+                    self.driver.find_element_by_xpath('//button[text()="Unfollow"]').click()
+                except Exception:
+                    pass
+                sleep(0.5)
            
             sleep(1)        
             self.driver.find_element_by_xpath('//html/body/div[4]/div/div/div[1]/div/div[2]/button').click()
@@ -99,12 +112,15 @@ class InstaBot:
                 
             print(following_list)
         
-        
-            
+        def compare():
+            for i in following_list:
+                if i not in followers_list:
+                    i.append(to_unfollow_list)
+            print(to_unfollow_list)
                         
-        followers_add()
         following_add()
-        # compare()
+        followers_add()
+        compare()
         
 username, password = insta_username, insta_password      
 bot = InstaBot(username, password)
