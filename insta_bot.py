@@ -71,8 +71,10 @@ class InstaBot:
             sleep(1)        
             self.driver.find_element_by_xpath('/html/body/div[4]/div/div/div[1]/div/div[2]/button').click()
             sleep(1)
+            print('Followers: \n')
             print(followers_list)
-        
+            print('\n\n')
+
         ###########################################Adding to following list##################################
         def following_add():
             scroll = round(int(followers)/7)
@@ -109,14 +111,17 @@ class InstaBot:
             sleep(1)        
             self.driver.find_element_by_xpath('//html/body/div[4]/div/div/div[1]/div/div[2]/button').click()
             sleep(1)
-                
+            print('Following: \n')
             print(following_list)
+            print('\n\n')
         
         def compare():
-            for i in following_list:
-                if i not in followers_list:
-                    i.append(to_unfollow_list)
+            for i in followers_list:
+                if i not in following_list:
+                    to_unfollow_list.append(i)
+            print("Unfollowed: \n")
             print(to_unfollow_list)
+            print('\n\n')
                         
         following_add()
         followers_add()
